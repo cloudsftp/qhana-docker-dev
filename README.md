@@ -21,5 +21,9 @@ Just run `git remote set-url origin https://github.com/UST-QuAntiL/qhana-plugin-
 ## Start QHAna
 
 ```
-docker-compose --profile with_db up
+./start
 ```
+
+- Starts `qhana-ui` with live updates
+- Starts docker compose for `qhana-backend`, `qhana-plugin-runner`, etc.
+- Plugins are loaded live from `./qhana-plugin-runner/plugins`
