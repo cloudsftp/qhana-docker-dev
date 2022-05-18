@@ -7,8 +7,14 @@ This repo aims to ease the development of
 ## Initialize Submodules
 
 Run in the root of this project:
-- `git submodule init`
-- `git submodule update`
+
+```
+# init submodules
+git submodule init
+
+# pull latest changes to the submodules
+git submodule update
+```
 
 Inside the submodules you can use `git` just like in a normal repo.
 The deafault remotes are
@@ -16,7 +22,11 @@ The deafault remotes are
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
 
 You can change them to the `http` alternatives if you have connection issues.
-Just run `git remote set-url origin https://github.com/UST-QuAntiL/qhana-plugin-runner.git` inside the submodule.
+Just run 
+```
+git remote set-url origin https://github.com/UST-QuAntiL/qhana-plugin-runner.git
+```
+inside the submodule.
 
 ## Start QHAna
 
