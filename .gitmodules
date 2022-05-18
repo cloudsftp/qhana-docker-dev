@@ -1,0 +1,3 @@
+[submodule "qhana-plugin-runner"]
+	path = qhana-plugin-runner
+	url = git@github.com:UST-QuAntiL/qhana-plugin-runner.git
