@@ -14,7 +14,11 @@ if ! [ -x "$(command -v ng)" ]; then
     exit 2
 fi
 ng serve &
+NG_PID=$!
 cd -
 
 # Start the rest with docker compose
 docker-compose --profile with_db up
+
+# Stop ng
+kill "$NG_PID"
