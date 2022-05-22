@@ -13,7 +13,7 @@ if ! [ -x "$(command -v ng)" ]; then
     echo "You can do this by running 'sudo npm i -g @angular/cli'"
     exit 2
 fi
-ng serve &
+ng serve --poll 2000 &
 NG_PID=$!
 cd -
 
