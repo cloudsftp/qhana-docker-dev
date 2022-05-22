@@ -3,4 +3,4 @@
 	url = git@github.com:UST-QuAntiL/qhana-plugin-runner.git
 [submodule "qhana-ui"]
 	path = qhana-ui
-	url = git@github.com:UST-QuAntiL/qhana-ui.git
+	url = git@github.com:infacc/qhana-ui-private.git
