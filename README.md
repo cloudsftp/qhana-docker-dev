@@ -41,6 +41,8 @@ inside the submodule.
 - Starts docker compose for `qhana-backend`, `qhana-plugin-runner`, etc.
 - Plugins are loaded live from `./qhana-plugin-runner/plugins`
 
+The UI then is accessable at [http://localhost:4200](http://localhost:4200).
+
 ## Haftungsausschluss
 
 Dies ist ein Forschungsprototyp.
