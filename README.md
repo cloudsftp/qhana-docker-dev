@@ -20,7 +20,7 @@ git submodule update
 ```
 
 Inside the submodules you can use `git` just like in a normal repo.
-The deafault remotes are
+The default remotes are
 - `git@github.com:UST-QuAntiL/qhana-plugin-runner.git` and
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
 
