@@ -1,12 +1,19 @@
 #!/bin/bash
 
 REBUILD_IMAGES="false"
+REBUILD_ALL_IMAGES="false"
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        --rebuild-runner | -r)
+        --rebuild-runner)
             REBUILD_IMAGES="true"
-            IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-plugin-runner"
+            [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-plugin-runner"
+            shift
+            ;;
+        --rebuild | -r)
+            REBUILD_IMAGES="true"
+            REBUILD_ALL_IMAGES="true"
+            IMAGES_TO_REBUILD="" # Rebuilds all
             shift
             ;;
         *)
@@ -15,6 +22,7 @@ while [ $# -gt 0 ]; do
             echo "OPTIONS:"
             echo
             echo "   --rebuild-runner       Rebuilds qhana-plugin-runner"
+            echo "   --rebuild | -r         Rebuilds all services"
             echo
             
             exit 2
