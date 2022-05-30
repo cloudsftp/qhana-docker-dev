@@ -1,6 +1,6 @@
 # QHAna Docker Compose for Developers
 
-![version](https://img.shields.io/badge/Version-v0.0.1-blue)
+![version](https://img.shields.io/badge/Version-v0.0.2-blue)
 
 
 This repo aims to ease the development of
@@ -42,6 +42,15 @@ inside the submodule.
 - Plugins are loaded live from `./qhana-plugin-runner/plugins`
 
 The UI then is accessable at [http://localhost:4200](http://localhost:4200).
+
+### Options
+
+```
+OPTIONS:
+
+   --rebuild-runner       Rebuilds qhana-plugin-runner
+   --rebuild | -r         Rebuilds all services
+```
 
 ## Haftungsausschluss
 
