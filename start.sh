@@ -3,11 +3,16 @@
 ROOT_DIR="$(pwd)"
 
 help() {
-    echo "Usage: $0 [MODE [OPTIONS]]"
+    echo "Usage: $0 [MODE] [OPTIONS]"
     echo
     echo "MODE:"
-    echo "     <empty>              for development mode"
-    echo "     docker               for docker mode"
+    echo "     <empty>              For development mode"
+    echo "     docker               For docker mode"
+    echo
+    echo "OPTIONS for development mode:"
+    echo "   --no-ui                Does not start the user interface"
+    echo "   --no-worker            Does not start the worker"
+    echo "   --no-plugin-runner     Does not start the plugin runner"
     echo
     echo "OPTIONS for docker mode:"
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
@@ -64,40 +69,49 @@ dev_mode() {
     PR_LOG="${ROOT_DIR}/plugin-runner.log"
     WR_LOG="${ROOT_DIR}/worker.log"
 
-    # Start UI first
-    cd qhana-ui
-    if ! [ -x "$(command -v npm)" ]; then
-        info "Please install npm first!"
-        exit 2
-    fi
-    npm install
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --no-ui)
+                NO_UI="true"
+                shift
+                ;;
+            --no-worker)
+                NO_WORKER="true"
+                shift
+                ;;
+            --no-plugin-runner)
+                NO_PLUGIN_RUNNER="true"
+                ;;
+            *)
+                help
+        esac
+    done
 
-    if ! [ -x "$(command -v ng)" ]; then
-        info "Please install @angular/cli gobally"
-        info "You can do this by running 'sudo npm i -g @angular/cli'"
-        exit 2
+    # Start UI first
+    if ! [ "${NO_UI}" = "true" ]; then
+        cd qhana-ui
+        npm install
+        
+        info "Starting the user interface. Log is written to ${UI_LOG}"
+        ng serve --poll 2000 &> "${UI_LOG}" &
+        NG_PID=$!
+        cd -
     fi
-    
-    info "Starting the user interface. Log is written to ${UI_LOG}"
-    ng serve --poll 2000 &> "${UI_LOG}" &
-    NG_PID=$!
-    cd -
 
     # Then start the plugin runner
     cd qhana-plugin-runner
-    if ! [ -x "$(command -v poetry)" ]; then
-        echo "Please install poetry first!"
-        exit 2
+    if ! [ "${NO_PLUGIN_RUNNER}" = "true" ]; then
+        info "Starting the plugin runner. Log is written to ${PR_LOG}"
+        poetry run flask run &> "${PR_LOG}" &
+        PLUGIN_RUNNER_PID=$!
     fi
-    
-    info "Starting the plugin runner. Log is written to ${PR_LOG}"
-    poetry run flask run &> "${PR_LOG}" &
-    PLUGIN_RUNNER_PID=$!
 
-    poetry run invoke start-broker
-    info "Starting the worker. Log is written to ${WR_LOG}"
-    poetry run invoke worker &> "${WR_LOG}" &
-    WORKER_PID=$!
+    if ! [ "${NO_WORKER}" = "true" ]; then
+        poetry run invoke start-broker
+        info "Starting the worker. Log is written to ${WR_LOG}"
+        poetry run invoke worker &> "${WR_LOG}" &
+        WORKER_PID=$!
+    fi
     cd -
     
     docker-compose -f docker-compose-minimal.yml up
