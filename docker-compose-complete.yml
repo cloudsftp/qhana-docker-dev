@@ -1,4 +1,9 @@
 services:
+  qhana-ui:
+    build: ./qhana-ui
+    image: qhana-ui
+    ports:
+      - "4200:8080"
   qhana-plugin-runner:
     build: ./qhana-plugin-runner
     image: qhana-plugin-runner

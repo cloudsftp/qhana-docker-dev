@@ -1,0 +1,16 @@
+services:
+  muse-db:
+    build: ./qhana-plugin-runner/plugins/costume_loader_pkg/db_container
+    image: "muse-db"
+    profiles:
+      - with_db
+  backend:
+    image: ghcr.io/ust-quantil/qhana-backend:main
+    volumes:
+      - experiments:/app/data
+    network_mode: host
+    environment:
+      QHANA_URL_MAPPING: '{"(?<=^|https?://)host.docker.internal(:[0-9]+)?": "localhost$$1"}'
+volumes:
+  instance:
+  experiments:
