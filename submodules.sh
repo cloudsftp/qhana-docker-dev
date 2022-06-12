@@ -1,6 +1,13 @@
 #!/bin/bash
 
 help() {
+    echo "Usage: $0 BRANCH [BRANCH]"
+    echo
+    echo "Specify one or two branch names"
+    echo " - One:   Check out this branch in qhana-ui and qhana-plugin-runner"
+    echo " - Two:   Check out the first branch in qhana-ui and the second in qhana-plugin-runner"
+    echo
+
     exit 2
 }
 
