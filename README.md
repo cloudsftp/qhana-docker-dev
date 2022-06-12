@@ -1,6 +1,6 @@
 # QHAna Docker Compose for Developers
 
-![version](https://img.shields.io/badge/Version-v0.0.2-blue)
+![version](https://img.shields.io/badge/Version-v0.1.0-blue)
 
 
 This repo aims to ease the development of
