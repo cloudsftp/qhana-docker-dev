@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOT_DIR="$(pwd)"
+
 help() {
     echo "Usage: $0 [MODE [OPTIONS]]"
     echo
@@ -8,11 +10,18 @@ help() {
     echo "     docker               for docker mode"
     echo
     echo "OPTIONS for docker mode:"
-    echo "   --rebuild-runner       Rebuilds qhana-plugin-runner"
+    echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
+    echo "   --rebuild-ui           Rebuilds qhana-ui"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
     
     exit 2
+}
+
+info() {
+    echo
+    echo [START SCRIPT] $@
+    echo
 }
 
 docker_mode() {
@@ -24,6 +33,11 @@ docker_mode() {
             --rebuild-runner)
                 REBUILD_IMAGES="true"
                 [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-plugin-runner"
+                shift
+                ;;
+            --rebuild-ui)
+                REBUILD_IMAGES="true"
+                [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-ui"
                 shift
                 ;;
             --rebuild | -r)
@@ -46,20 +60,26 @@ docker_mode() {
 }
 
 dev_mode() {
+    UI_LOG="${ROOT_DIR}/ui.log"
+    PR_LOG="${ROOT_DIR}/plugin-runner.log"
+    WR_LOG="${ROOT_DIR}/worker.log"
+
     # Start UI first
     cd qhana-ui
     if ! [ -x "$(command -v npm)" ]; then
-        echo "Please install npm first!"
+        info "Please install npm first!"
         exit 2
     fi
     npm install
 
     if ! [ -x "$(command -v ng)" ]; then
-        echo "Please install @angular/cli gobally"
-        echo "You can do this by running 'sudo npm i -g @angular/cli'"
+        info "Please install @angular/cli gobally"
+        info "You can do this by running 'sudo npm i -g @angular/cli'"
         exit 2
     fi
-    ng serve --poll 2000 &
+    
+    info "Starting the user interface. Log is written to ${UI_LOG}"
+    ng serve --poll 2000 &> "${UI_LOG}" &
     NG_PID=$!
     cd -
 
@@ -69,11 +89,14 @@ dev_mode() {
         echo "Please install poetry first!"
         exit 2
     fi
-    poetry run flask run &
+    
+    info "Starting the plugin runner. Log is written to ${PR_LOG}"
+    poetry run flask run &> "${PR_LOG}" &
     PLUGIN_RUNNER_PID=$!
 
     poetry run invoke start-broker
-    poetry run invoke worker &
+    info "Starting the worker. Log is written to ${WR_LOG}"
+    poetry run invoke worker &> "${WR_LOG}" &
     WORKER_PID=$!
     cd -
     
