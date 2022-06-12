@@ -1,10 +1,12 @@
 # QHAna Docker Compose for Developers
 
-![version](https://img.shields.io/badge/Version-v0.0.1-blue)
+![version](https://img.shields.io/badge/Version-v0.1.0-blue)
 
 
 This repo aims to ease the development of
-- plugins and
+- the plugin runner,
+- the wroker,
+- plugins, and
 - the UI
 
 ## Initialize Submodules
@@ -20,7 +22,7 @@ git submodule update
 ```
 
 Inside the submodules you can use `git` just like in a normal repo.
-The deafault remotes are
+The default remotes are
 - `git@github.com:UST-QuAntiL/qhana-plugin-runner.git` and
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
 
@@ -31,17 +33,78 @@ git remote set-url origin https://github.com/UST-QuAntiL/qhana-plugin-runner.git
 ```
 inside the submodule.
 
-## Start QHAna
+## Usage
 
 ```
-./start
+Usage: ./start.sh [MODE] [OPTIONS]
+
+MODE:
+     <empty>              For development mode
+     docker               For docker mode
+
+OPTIONS for development mode:
+   --no-ui                Does not start the user interface
+   --no-worker            Does not start the worker
+   --no-plugin-runner     Does not start the plugin runner
+
+OPTIONS for docker mode:
+   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
+   --rebuild-ui           Rebuilds qhana-ui
+   --rebuild | -r         Rebuilds all services
 ```
 
-- Starts `qhana-ui` with live updates
-- Starts docker compose for `qhana-backend`, `qhana-plugin-runner`, etc.
-- Plugins are loaded live from `./qhana-plugin-runner/plugins`
+### Modes
 
+There are two modes:
+- development and
+- docker
+
+#### Development
+
+```
+./start.sh [OPTIONS]
+```
+
+Starts the user interface, plugin runner, and worker on the localhost.
+While running the backend in a docker container.
+
+This allows for live reloads of the user interface and plugin runner when you are editing the code.
+
+The output of the user interface, plugin runner, and worker are written to log files.
+The output of the docker containers are displayed in the console.
+
+Plugins are loaded from `./qhana-plugin-runner/plugins`
 The UI then is accessable at [http://localhost:4200](http://localhost:4200).
+
+##### Options
+
+```
+OPTIONS for development mode:
+   --no-ui                Does not start the user interface
+   --no-worker            Does not start the worker
+   --no-plugin-runner     Does not start the plugin runner
+```
+
+#### Docker
+
+```
+./start.sh docker [OPTIONS]
+```
+
+Starts everything in a docker container.
+This is intended for final testing.
+
+Plugins are loaded from `./qhana-plugin-runner/plugins`
+The UI then is accessable at [http://localhost:4200](http://localhost:4200).
+
+##### Options
+
+```
+OPTIONS for docker mode:
+   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
+   --rebuild-ui           Rebuilds qhana-ui
+   --rebuild | -r         Rebuilds all services
+```
 
 ## Haftungsausschluss
 
