@@ -1,60 +1,16 @@
 services:
-  qhana-plugin-runner:
-    build: ./qhana-plugin-runner
-    image: qhana-plugin-runner
-    depends_on:
-      - redis
-      - postgres
-    ports:
-      - "5005:8080"
-    volumes:
-      - instance:/app/instance
-      - ./qhana-plugin-runner/plugins:/app/plugins
-    environment:
-      CONCURRENCY: 2
-      BROKER_URL: redis://redis:6379
-      RESULT_BACKEND: redis://redis:6379
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://user:password@postgres:5432/default_db"
-      URL_MAP: '{"(https?://)(localhost|host.docker.internal):9090": "\\1backend:9090"}'
-  redis:
-    image: "redis:latest"
-    ports:
-      - "6379:6379"
-  postgres:
-    image: "postgres:latest"
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: user
-      POSTGRES_DB: default_db
   muse-db:
     build: ./qhana-plugin-runner/plugins/costume_loader_pkg/db_container
     image: "muse-db"
     profiles:
       - with_db
-  worker:
-    image: qhana-plugin-runner
-    depends_on:
-      - qhana-plugin-runner
-    volumes:
-      - instance:/app/instance
-      - ./qhana-plugin-runner/plugins:/app/plugins
-    environment:
-      CONTAINER_MODE: worker
-      CONCURRENCY: 2
-      BROKER_URL: redis://redis:6379
-      RESULT_BACKEND: redis://redis:6379
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://user:password@postgres:5432/default_db"
-      URL_MAP: '{"(https?://)(localhost|host.docker.internal):9090": "\\1backend:9090"}'
   backend:
     image: ghcr.io/ust-quantil/qhana-backend:main
     volumes:
       - experiments:/app/data
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    network_mode: host
     environment:
-      QHANA_URL_MAPPING: '{"(?<=^|https?://)(localhost|host.docker.internal):5005": "qhana-plugin-runner:8080", "(?<=^|https?://)localhost(:[0-9]+)?": "host.docker.internal$$1"}'
-    ports:
-      - 9090:9090
+      QHANA_URL_MAPPING: '{"(?<=^|https?://)host.docker.internal(:[0-9]+)?": "localhost$$1"}'
 volumes:
   instance:
   experiments:
