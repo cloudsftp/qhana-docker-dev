@@ -126,7 +126,7 @@ if [ "$#" -eq 0 ]; then
     dev_mode
 elif [ "$1" = "docker" ]; then
     shift
-    docker_mode
+    docker_mode "$@"
 else
-    help
+    dev_mode "$@"
 fi
