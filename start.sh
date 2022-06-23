@@ -57,7 +57,7 @@ docker_mode() {
     done
 
     # Rebuild images
-    [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yaml \
+    [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yml \
                                             build --parallel ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
