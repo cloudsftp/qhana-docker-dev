@@ -4,3 +4,6 @@
 [submodule "qhana-ui"]
 	path = qhana-ui
 	url = git@github.com:infacc/qhana-ui-private.git
+[submodule "nisq-analyzer"]
+	path = nisq-analyzer
+	url = git@github.com:UST-QuAntiL/nisq-analyzer.git
