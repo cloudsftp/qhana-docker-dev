@@ -68,6 +68,7 @@ dev_mode() {
     UI_LOG="${ROOT_DIR}/ui.log"
     PR_LOG="${ROOT_DIR}/plugin-runner.log"
     WR_LOG="${ROOT_DIR}/worker.log"
+    NISQ_UI_LOG="${ROOT_DIR}/nisq-analyzer-ui.log"
 
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -81,6 +82,9 @@ dev_mode() {
                 ;;
             --no-plugin-runner)
                 NO_PLUGIN_RUNNER="true"
+                ;;
+            --no-nisq-analyzer-ui)
+                NO_NISQ_ANALYZER_UI="true"
                 ;;
             *)
                 help
@@ -114,12 +118,27 @@ dev_mode() {
     fi
     cd -
     
+    # Also start the NISQ Analyzer UI
+    
+    if ! [ "${NO_NISQ_ANALYZER_UI}" = "true" ]; then
+        export NISQ_ANALYZER_HOST_NAME="localhost"
+        export NISQ_ANALYZER_PORT="6473"
+        
+        cd nisq-analyzer-ui
+        info "Starting the NISQ Analyzer UI. Log is written to ${NISQ_UI_LOG}"
+        npm install
+        ng serve --port 80 &> "${NISQ_UI_LOG}" &
+        NISQ_NG_PID=$!
+        cd -
+    fi
+    
     docker-compose -f docker-compose-minimal.yml up
 
     # Stop ng and flask
     [ -d "/proc/${NG_PID}" ] && kill "${NG_PID}"
     [ -d "/proc/${PLUGIN_RUNNER_PID}" ] && kill "${PLUGIN_RUNNER_PID}"
     [ -d "/proc/${WORKER_PID}" ] && kill "${WORKER_PID}"
+    [ -d "/proc/${NISQ_NG_PID}" ] && kill "${NISQ_NG_PID}"
 }
 
 if [ "$#" -eq 0 ]; then
