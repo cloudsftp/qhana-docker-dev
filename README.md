@@ -25,6 +25,7 @@ Inside the submodules you can use `git` just like in a normal repo.
 The default remotes are
 - `git@github.com:UST-QuAntiL/qhana-plugin-runner.git` and
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
+- `git@github.com:UST-QuAntiL/nisq-analzer-ui.git`
 
 You can change them to the `http` alternatives if you have connection issues.
 Just run 
@@ -46,10 +47,12 @@ OPTIONS for development mode:
    --no-ui                Does not start the user interface
    --no-worker            Does not start the worker
    --no-plugin-runner     Does not start the plugin runner
+   --no-nisq-ui           Does not start the user interface for the nisq analyzer
 
 OPTIONS for docker mode:
    --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
    --rebuild-ui           Rebuilds qhana-ui
+   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui
    --rebuild | -r         Rebuilds all services
 ```
 
@@ -83,6 +86,7 @@ OPTIONS for development mode:
    --no-ui                Does not start the user interface
    --no-worker            Does not start the worker
    --no-plugin-runner     Does not start the plugin runner
+   --no-nisq-ui           Does not start the user interface for the nisq analyzer
 ```
 
 #### Docker
@@ -103,6 +107,7 @@ The UI then is accessable at [http://localhost:4200](http://localhost:4200).
 OPTIONS for docker mode:
    --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
    --rebuild-ui           Rebuilds qhana-ui
+   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui
    --rebuild | -r         Rebuilds all services
 ```
 
