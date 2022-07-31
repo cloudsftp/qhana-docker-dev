@@ -19,7 +19,6 @@ help() {
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
     echo "   --rebuild-ui           Rebuilds qhana-ui"
     echo "   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui"
-    echo "   --rebuild-nisq         Rebuilds nisq-analyzer"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
     
@@ -51,12 +50,6 @@ docker_mode() {
             --rebuild-nisq-ui)
                 REBUILD_IMAGES="true"
                 [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} nisq-analyzer-ui"
-                shift
-                ;;
-            --rebuild-nisq)
-                REBUILD_IMAGES="true"
-                [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} nisq-analyzer"
-                shift
                 ;;
             --rebuild | -r)
                 REBUILD_IMAGES="true"
@@ -95,11 +88,9 @@ dev_mode() {
                 ;;
             --no-plugin-runner)
                 NO_PLUGIN_RUNNER="true"
-                shift
                 ;;
             --no-nisq-analyzer-ui)
                 NO_NISQ_ANALYZER_UI="true"
-                shift
                 ;;
             *)
                 help

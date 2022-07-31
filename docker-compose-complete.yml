@@ -73,8 +73,7 @@ services:
     ports:
       - "5060:5060"
   nisq-analyzer:
-    build: ./nisq-analyzer
-    image: nisq-analyzer
+    image: planqk/nisq-analyzer:latest
     environment:
       POSTGRES_HOSTNAME: nisq-analyzer-db
       POSTGRES_PORT: 5060
