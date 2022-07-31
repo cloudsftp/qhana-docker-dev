@@ -65,7 +65,7 @@ docker_mode() {
 
     # Rebuild images
     [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yml \
-                                            build --parallel ${IMAGES_TO_REBUILD}
+                                            build ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
     docker-compose -f docker-compose-complete.yml --profile with_db up

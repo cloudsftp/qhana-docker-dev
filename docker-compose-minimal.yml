@@ -11,7 +11,12 @@ services:
     network_mode: host
     environment:
       QHANA_URL_MAPPING: '{"(?<=^|https?://)host.docker.internal(:[0-9]+)?": "localhost$$1"}'
-        
+ 
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
   nisq-analyzer-db:
     image: postgres
     environment:
@@ -88,7 +93,6 @@ services:
       NISQ_ANALYZER_URI: http://nisq-analyzer:5010
     ports:
       - '6473:6473'
-
 
 volumes:
   instance:
