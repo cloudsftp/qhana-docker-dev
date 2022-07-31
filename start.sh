@@ -50,6 +50,7 @@ docker_mode() {
             --rebuild-nisq-ui)
                 REBUILD_IMAGES="true"
                 [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} nisq-analyzer-ui"
+                shift
                 ;;
             --rebuild | -r)
                 REBUILD_IMAGES="true"
@@ -88,9 +89,11 @@ dev_mode() {
                 ;;
             --no-plugin-runner)
                 NO_PLUGIN_RUNNER="true"
+                shift
                 ;;
             --no-nisq-analyzer-ui)
                 NO_NISQ_ANALYZER_UI="true"
+                shift
                 ;;
             *)
                 help
