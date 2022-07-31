@@ -13,10 +13,12 @@ help() {
     echo "   --no-ui                Does not start the user interface"
     echo "   --no-worker            Does not start the worker"
     echo "   --no-plugin-runner     Does not start the plugin runner"
+    echo "   --no-nisq-ui           Does not start the user interface for the nisq analyzer"
     echo
     echo "OPTIONS for docker mode:"
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
     echo "   --rebuild-ui           Rebuilds qhana-ui"
+    echo "   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
     
@@ -45,6 +47,11 @@ docker_mode() {
                 [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-ui"
                 shift
                 ;;
+            --rebuild-nisq-ui)
+                REBUILD_IMAGES="true"
+                [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} nisq-analyzer-ui"
+                shift
+                ;;
             --rebuild | -r)
                 REBUILD_IMAGES="true"
                 REBUILD_ALL_IMAGES="true"
@@ -58,7 +65,7 @@ docker_mode() {
 
     # Rebuild images
     [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yml \
-                                            build --parallel ${IMAGES_TO_REBUILD}
+                                            build ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
     docker-compose -f docker-compose-complete.yml --profile with_db up
@@ -82,9 +89,11 @@ dev_mode() {
                 ;;
             --no-plugin-runner)
                 NO_PLUGIN_RUNNER="true"
+                shift
                 ;;
             --no-nisq-analyzer-ui)
                 NO_NISQ_ANALYZER_UI="true"
+                shift
                 ;;
             *)
                 help
