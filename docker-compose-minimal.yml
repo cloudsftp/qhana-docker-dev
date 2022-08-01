@@ -52,14 +52,6 @@ services:
       PRIORITIZATION_PORT: 8080
     ports:
       - '5010:5010'
-  nisq-analyzer-ui:
-    build: ./nisq-analyzer-ui
-    image: nisq-analyzer-ui
-    environment:
-      NISQ_ANALYZER_HOST_NAME: localhost
-      NISQ_ANALYZER_PORT: 6473
-    ports:
-      - '80:80'
   qiskit-service:
     image: planqk/qiskit-service:latest
     command: sh /app/startup.sh

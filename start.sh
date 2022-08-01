@@ -136,7 +136,8 @@ dev_mode() {
         cd nisq-analyzer-ui
         info "Starting the NISQ Analyzer UI. Log is written to ${NISQ_UI_LOG}"
         npm install
-        ng serve --port 80 &> "${NISQ_UI_LOG}" &
+        sudo echo you need to have root privileges
+        sudo ng serve --port 80 &> "${NISQ_UI_LOG}" &
         NISQ_NG_PID=$!
         cd -
     fi
