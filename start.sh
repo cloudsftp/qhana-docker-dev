@@ -91,7 +91,7 @@ dev_mode() {
                 NO_PLUGIN_RUNNER="true"
                 shift
                 ;;
-            --no-nisq-analyzer-ui)
+            --no-nisq-ui)
                 NO_NISQ_ANALYZER_UI="true"
                 shift
                 ;;
@@ -142,7 +142,14 @@ dev_mode() {
         cd -
     fi
     
-    docker-compose -f docker-compose-minimal.yml up
+    if grep -qi microsoft /proc/version; then
+        OS="windows"
+    else
+        OS="linux"
+    fi
+    docker-compose -f "docker-compose-minimal.yml" \
+                   -f "docker-compose-minimal.${OS}.yml" \
+                   up
 
     # Stop ng and flask
     [ -d "/proc/${NG_PID}" ] && kill "${NG_PID}"

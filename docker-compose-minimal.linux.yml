@@ -1,0 +1,6 @@
+services:
+  backend:
+    network_mode: host
+    environment:
+      QHANA_URL_MAPPING: '{"(?<=^|https?://)host.docker.internal(:[0-9]+)?": "localhost$$1"}'
+ 

@@ -8,10 +8,8 @@ services:
     image: ghcr.io/ust-quantil/qhana-backend:main
     volumes:
       - experiments:/app/data
-    network_mode: host
-    environment:
-      QHANA_URL_MAPPING: '{"(?<=^|https?://)host.docker.internal(:[0-9]+)?": "localhost$$1"}'
- 
+    # all other settings are set in the OS specific config files for the minimal setup
+
   redis:
     image: "redis:latest"
     ports:
