@@ -111,6 +111,10 @@ OPTIONS for docker mode:
    --rebuild | -r         Rebuilds all services
 ```
 
+### IBMQ Token
+
+Copy the file `_docker-compose.ibmq.yml` to `docker-compose.ibmq.yml` and put your token in the new file.
+
 ## Haftungsausschluss
 
 Dies ist ein Forschungsprototyp.
