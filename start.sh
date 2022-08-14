@@ -68,7 +68,9 @@ docker_mode() {
                                             build ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
-    docker-compose -f docker-compose-complete.yml --profile with_db up
+    docker-compose -f docker-compose-complete.yml \
+                   $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
+                   --profile with_db up
 }
 
 dev_mode() {
@@ -149,6 +151,8 @@ dev_mode() {
     fi
     docker-compose -f "docker-compose-minimal.yml" \
                    -f "docker-compose-minimal.${OS}.yml" \
+                   $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
+                   --profile with_db \
                    up
 
     # Stop ng and flask
