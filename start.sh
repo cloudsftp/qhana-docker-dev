@@ -64,11 +64,11 @@ docker_mode() {
     done
 
     # Rebuild images
-    [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yml \
+    [ "${REBUILD_IMAGES}" = "true" ] && docker compose -f docker-compose-complete.yml \
                                             build ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
-    docker-compose -f docker-compose-complete.yml \
+    docker compose -f docker-compose-complete.yml \
                    $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
                    --profile with_db up
 }
@@ -149,7 +149,7 @@ dev_mode() {
     else
         OS="linux"
     fi
-    docker-compose -f "docker-compose-minimal.yml" \
+    docker compose -f "docker-compose-minimal.yml" \
                    -f "docker-compose-minimal.${OS}.yml" \
                    $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
                    --profile with_db \
