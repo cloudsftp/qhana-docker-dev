@@ -42,6 +42,7 @@ services:
 
   worker:
     image: qhana-plugin-runner
+    build: ./qhana-plugin-runner
     depends_on:
       - qhana-plugin-runner
     volumes:
