@@ -117,7 +117,7 @@ services:
     ports:
       - "5013:5013"
     environment:
-      - REDIS_URL=redis://rnisq-analyze-redis:5040
+      - REDIS_URL=redis://nisq-analyzer-redis:5040
       - DATABASE_URL=sqlite:////data/app.db
     volumes:
       - exec_data:/data
