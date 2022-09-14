@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SUBMODULES=$(git submodule | sed -E 's/^\S*\s(\S*)\s\S*$/\1/')
+SUBMODULES=$(git submodule | awk '{print $2}')
 
 for SUB in $SUBMODULES; do
 	cd "$SUB"
