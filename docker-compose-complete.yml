@@ -111,7 +111,7 @@ services:
       NISQ_ANALYZER_HOST_NAME: localhost
       NISQ_ANALYZER_PORT: 5010
     ports:
-      - '80:80'
+      - '4201:80'
     networks:
       - default
 

@@ -115,6 +115,8 @@ dev_mode() {
 
     # Then start the plugin runner
     cd qhana-plugin-runner
+    export NISQ_ANALYZER_UI_PORT="4201"
+
     if ! [ "${NO_PLUGIN_RUNNER}" = "true" ]; then
         info "Starting the plugin runner. Log is written to ${PR_LOG}"
         poetry run flask run &> "${PR_LOG}" &
@@ -138,8 +140,7 @@ dev_mode() {
         cd nisq-analyzer-ui
         info "Starting the NISQ Analyzer UI. Log is written to ${NISQ_UI_LOG}"
         npm install
-        sudo echo you need to have root privileges
-        sudo ng serve --port 80 &> "${NISQ_UI_LOG}" &
+        ng serve --port "${NISQ_ANALYZER_UI_PORT}" &> "${NISQ_UI_LOG}" &
         NISQ_NG_PID=$!
         cd -
     fi
