@@ -10,3 +10,6 @@
 [submodule "nisq-analyzer-ui"]
 	path = nisq-analyzer-ui
 	url = git@github.com:cloudsftp/nisq-analyzer-ui-private.git
+[submodule "qhana-backend"]
+	path = qhana-backend
+	url = git@github.com:UST-QuAntiL/qhana-backend.git

@@ -37,6 +37,11 @@ docker_mode() {
 
     while [ $# -gt 0 ]; do
         case "$1" in
+            --rebuild-backend)
+                REBUILD_IMAGES="true"
+                [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-backend"
+                shift
+                ;;
             --rebuild-runner)
                 REBUILD_IMAGES="true"
                 [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-plugin-runner"
