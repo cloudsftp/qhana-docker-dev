@@ -19,9 +19,10 @@ help() {
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
     echo "   --rebuild-ui           Rebuilds qhana-ui"
     echo "   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui"
+    echo "   --rebuild-backend      Rebulids qhana-backedn"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
-    
+
     exit 2
 }
 
@@ -111,7 +112,7 @@ dev_mode() {
     if ! [ "${NO_UI}" = "true" ]; then
         cd qhana-ui
         npm install
-        
+
         info "Starting the user interface. Log is written to ${UI_LOG}"
         ng serve --poll 2000 &> "${UI_LOG}" &
         NG_PID=$!
@@ -135,13 +136,13 @@ dev_mode() {
         WORKER_PID=$!
     fi
     cd -
-    
+
     # Also start the NISQ Analyzer UI
-    
+
     if ! [ "${NO_NISQ_ANALYZER_UI}" = "true" ]; then
         export NISQ_ANALYZER_HOST_NAME="localhost"
         export NISQ_ANALYZER_PORT="6473"
-        
+
         cd nisq-analyzer-ui
         info "Starting the NISQ Analyzer UI. Log is written to ${NISQ_UI_LOG}"
         npm install
@@ -149,7 +150,7 @@ dev_mode() {
         NISQ_NG_PID=$!
         cd -
     fi
-    
+
     if grep -qi microsoft /proc/version; then
         OS="windows"
     else
