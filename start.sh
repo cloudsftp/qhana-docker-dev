@@ -19,7 +19,7 @@ help() {
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
     echo "   --rebuild-ui           Rebuilds qhana-ui"
     echo "   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui"
-    echo "   --rebuild-backend      Rebulids qhana-backedn"
+    echo "   --rebuild-backend      Rebulids qhana-backend"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
 
