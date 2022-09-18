@@ -1,12 +1,12 @@
 [submodule "qhana-plugin-runner"]
 	path = qhana-plugin-runner
-	url = git@github.com:cloudsftp/qhana-plugin-runner-private.git
+	url = git@github.com:UST-QuAntiL/qhana-plugin-runner.git
 [submodule "qhana-ui"]
 	path = qhana-ui
-	url = git@github.com:infacc/qhana-ui-private.git
-[submodule "nisq-analyzer"]
-	path = nisq-analyzer
-	url = git@github.com:UST-QuAntiL/nisq-analyzer.git
+	url = git@github.com:UST-QuAntiL/qhana-ui.git
 [submodule "nisq-analyzer-ui"]
 	path = nisq-analyzer-ui
-	url = git@github.com:cloudsftp/nisq-analyzer-ui-private.git
+	url = git@github.com:UST-QuAntiL/nisq-analyzer-ui.git
+[submodule "qhana-backend"]
+	path = qhana-backend
+	url = git@github.com:UST-QuAntiL/qhana-backend.git
