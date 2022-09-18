@@ -6,8 +6,10 @@
 This repo aims to ease the development of
 - the plugin runner,
 - the wroker,
-- plugins, and
-- the UI
+- plugins,
+- the UI,
+- the backend, and
+- the nisq analyzer UI
 
 ## Initialize Submodules
 
@@ -109,6 +111,7 @@ OPTIONS for docker mode:
    --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
    --rebuild-ui           Rebuilds qhana-ui
    --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui
+   --rebuild-backend      Rebulids qhana-backend
    --rebuild | -r         Rebuilds all services
 ```
 
