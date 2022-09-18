@@ -1,13 +1,15 @@
 # QHAna Docker Compose for Developers
 
-![version](https://img.shields.io/badge/Version-v0.1.0-blue)
+![version](https://img.shields.io/badge/Version-v0.1.1-blue)
 
 
 This repo aims to ease the development of
 - the plugin runner,
 - the wroker,
-- plugins, and
-- the UI
+- plugins,
+- the UI,
+- the backend, and
+- the nisq analyzer UI
 
 ## Initialize Submodules
 
@@ -25,6 +27,8 @@ Inside the submodules you can use `git` just like in a normal repo.
 The default remotes are
 - `git@github.com:UST-QuAntiL/qhana-plugin-runner.git` and
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
+- `git@github.com:UST-QuAntiL/nisq-analyzer-ui.git`
+- `git@github.com:UST-QuAntiL/qhana-backend.git`
 
 You can change them to the `http` alternatives if you have connection issues.
 Just run 
@@ -46,10 +50,12 @@ OPTIONS for development mode:
    --no-ui                Does not start the user interface
    --no-worker            Does not start the worker
    --no-plugin-runner     Does not start the plugin runner
+   --no-nisq-ui           Does not start the user interface for the nisq analyzer
 
 OPTIONS for docker mode:
    --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
    --rebuild-ui           Rebuilds qhana-ui
+   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui
    --rebuild | -r         Rebuilds all services
 ```
 
@@ -83,6 +89,7 @@ OPTIONS for development mode:
    --no-ui                Does not start the user interface
    --no-worker            Does not start the worker
    --no-plugin-runner     Does not start the plugin runner
+   --no-nisq-ui           Does not start the user interface for the nisq analyzer
 ```
 
 #### Docker
@@ -103,8 +110,14 @@ The UI then is accessable at [http://localhost:4200](http://localhost:4200).
 OPTIONS for docker mode:
    --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)
    --rebuild-ui           Rebuilds qhana-ui
+   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui
+   --rebuild-backend      Rebulids qhana-backend
    --rebuild | -r         Rebuilds all services
 ```
+
+### IBMQ Token
+
+Copy the file `_docker-compose.ibmq.yml` to `docker-compose.ibmq.yml` and put your token in the new file.
 
 ## Haftungsausschluss
 

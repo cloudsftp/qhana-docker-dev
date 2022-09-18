@@ -13,13 +13,16 @@ help() {
     echo "   --no-ui                Does not start the user interface"
     echo "   --no-worker            Does not start the worker"
     echo "   --no-plugin-runner     Does not start the plugin runner"
+    echo "   --no-nisq-ui           Does not start the user interface for the nisq analyzer"
     echo
     echo "OPTIONS for docker mode:"
     echo "   --rebuild-runner       Rebuilds qhana-plugin-runner (the same image is used for the worker)"
     echo "   --rebuild-ui           Rebuilds qhana-ui"
+    echo "   --rebuild-nisq-ui      Rebuilds nisq-analyzer-ui"
+    echo "   --rebuild-backend      Rebulids qhana-backend"
     echo "   --rebuild | -r         Rebuilds all services"
     echo
-    
+
     exit 2
 }
 
@@ -35,6 +38,11 @@ docker_mode() {
 
     while [ $# -gt 0 ]; do
         case "$1" in
+            --rebuild-backend)
+                REBUILD_IMAGES="true"
+                [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-backend"
+                shift
+                ;;
             --rebuild-runner)
                 REBUILD_IMAGES="true"
                 [ "${REBUILD_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-plugin-runner"
@@ -43,6 +51,11 @@ docker_mode() {
             --rebuild-ui)
                 REBUILD_IMAGES="true"
                 [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} qhana-ui"
+                shift
+                ;;
+            --rebuild-nisq-ui)
+                REBUILD_IMAGES="true"
+                [ "${REBUIld_ALL_IMAGES}" = "true" ] || IMAGES_TO_REBUILD="${IMAGES_TO_REBUILD} nisq-analyzer-ui"
                 shift
                 ;;
             --rebuild | -r)
@@ -57,17 +70,20 @@ docker_mode() {
     done
 
     # Rebuild images
-    [ "${REBUILD_IMAGES}" = "true" ] && docker-compose -f docker-compose-complete.yaml \
-                                            build --parallel ${IMAGES_TO_REBUILD}
+    [ "${REBUILD_IMAGES}" = "true" ] && docker compose -f docker-compose-complete.yml \
+                                            build ${IMAGES_TO_REBUILD}
 
     # Start the rest with docker compose
-    docker-compose -f docker-compose-complete.yml --profile with_db up
+    docker compose -f docker-compose-complete.yml \
+                   $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
+                   --profile with_db up
 }
 
 dev_mode() {
     UI_LOG="${ROOT_DIR}/ui.log"
     PR_LOG="${ROOT_DIR}/plugin-runner.log"
     WR_LOG="${ROOT_DIR}/worker.log"
+    NISQ_UI_LOG="${ROOT_DIR}/nisq-analyzer-ui.log"
 
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -81,6 +97,11 @@ dev_mode() {
                 ;;
             --no-plugin-runner)
                 NO_PLUGIN_RUNNER="true"
+                shift
+                ;;
+            --no-nisq-ui)
+                NO_NISQ_ANALYZER_UI="true"
+                shift
                 ;;
             *)
                 help
@@ -91,7 +112,7 @@ dev_mode() {
     if ! [ "${NO_UI}" = "true" ]; then
         cd qhana-ui
         npm install
-        
+
         info "Starting the user interface. Log is written to ${UI_LOG}"
         ng serve --poll 2000 &> "${UI_LOG}" &
         NG_PID=$!
@@ -100,6 +121,8 @@ dev_mode() {
 
     # Then start the plugin runner
     cd qhana-plugin-runner
+    export NISQ_ANALYZER_UI_PORT="4201"
+
     if ! [ "${NO_PLUGIN_RUNNER}" = "true" ]; then
         info "Starting the plugin runner. Log is written to ${PR_LOG}"
         poetry run flask run &> "${PR_LOG}" &
@@ -113,20 +136,44 @@ dev_mode() {
         WORKER_PID=$!
     fi
     cd -
-    
-    docker-compose -f docker-compose-minimal.yml up
+
+    # Also start the NISQ Analyzer UI
+
+    if ! [ "${NO_NISQ_ANALYZER_UI}" = "true" ]; then
+        export NISQ_ANALYZER_HOST_NAME="localhost"
+        export NISQ_ANALYZER_PORT="6473"
+
+        cd nisq-analyzer-ui
+        info "Starting the NISQ Analyzer UI. Log is written to ${NISQ_UI_LOG}"
+        npm install
+        ng serve --port "${NISQ_ANALYZER_UI_PORT}" &> "${NISQ_UI_LOG}" &
+        NISQ_NG_PID=$!
+        cd -
+    fi
+
+    if grep -qi microsoft /proc/version; then
+        OS="windows"
+    else
+        OS="linux"
+    fi
+    docker compose -f "docker-compose-minimal.yml" \
+                   -f "docker-compose-minimal.${OS}.yml" \
+                   $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
+                   --profile with_db \
+                   up
 
     # Stop ng and flask
     [ -d "/proc/${NG_PID}" ] && kill "${NG_PID}"
     [ -d "/proc/${PLUGIN_RUNNER_PID}" ] && kill "${PLUGIN_RUNNER_PID}"
     [ -d "/proc/${WORKER_PID}" ] && kill "${WORKER_PID}"
+    [ -d "/proc/${NISQ_NG_PID}" ] && kill "${NISQ_NG_PID}"
 }
 
 if [ "$#" -eq 0 ]; then
     dev_mode
 elif [ "$1" = "docker" ]; then
     shift
-    docker_mode
+    docker_mode "$@"
 else
-    help
+    dev_mode "$@"
 fi
