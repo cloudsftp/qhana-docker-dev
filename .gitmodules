@@ -6,7 +6,7 @@
 	url = git@github.com:UST-QuAntiL/qhana-ui.git
 [submodule "nisq-analyzer-ui"]
 	path = nisq-analyzer-ui
-	url = git@github.com:UST-QuAntiL/nisq-analzer-ui.git
+	url = git@github.com:UST-QuAntiL/nisq-analyzer-ui.git
 [submodule "qhana-backend"]
 	path = qhana-backend
 	url = git@github.com:UST-QuAntiL/qhana-backend.git

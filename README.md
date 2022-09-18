@@ -25,7 +25,7 @@ Inside the submodules you can use `git` just like in a normal repo.
 The default remotes are
 - `git@github.com:UST-QuAntiL/qhana-plugin-runner.git` and
 - `git@github.com:UST-QuAntiL/qhana-ui.git`
-- `git@github.com:UST-QuAntiL/nisq-analzer-ui.git`
+- `git@github.com:UST-QuAntiL/nisq-analyzer-ui.git`
 - `git@github.com:UST-QuAntiL/qhana-backend.git`
 
 You can change them to the `http` alternatives if you have connection issues.
