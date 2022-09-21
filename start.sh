@@ -122,6 +122,7 @@ dev_mode() {
     # Then start the plugin runner
     cd qhana-plugin-runner
     export NISQ_ANALYZER_UI_PORT="4201"
+    export NISQ_ANALYZER_UI_URL="http://localhost:${NISQ_ANALYZER_UI_PORT}"
 
     if ! [ "${NO_PLUGIN_RUNNER}" = "true" ]; then
         info "Starting the plugin runner. Log is written to ${PR_LOG}"

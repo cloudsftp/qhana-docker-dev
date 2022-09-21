@@ -23,6 +23,7 @@ services:
       RESULT_BACKEND: redis://redis:6379
       SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://user:password@postgres:5432/default_db"
       URL_MAP: '{"(https?://)(localhost|host.docker.internal):9090": "\\1backend:9090"}'
+      NISQ_ANALYZER_UI_URL: http://localhost:4201
 
   redis:
     image: "redis:latest"
