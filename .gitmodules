@@ -10,3 +10,6 @@
 [submodule "qhana-backend"]
 	path = qhana-backend
 	url = git@github.com:UST-QuAntiL/qhana-backend.git
+[submodule "nisq-analyzer-content"]
+	path = nisq-analyzer-content
+	url = git@github.com:UST-QuAntiL/nisq-analyzer-content.git
