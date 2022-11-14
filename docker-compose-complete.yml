@@ -73,8 +73,8 @@ services:
 
   nisq-analyzer-db:
     build:
-      context: nisq-analyzer-content/prioritization-based-on-learned-weights/
-      dockerfile: Docker/db/Dockerfile
+      context: nisq-analyzer-db
+      dockerfile: Dockerfile-nisq-analyzer-content
     environment:
       POSTGRES_PASSWORD: nisq
       POSTGRES_USER: nisq
@@ -86,6 +86,8 @@ services:
     image: planqk/nisq-analyzer:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - nisq-analyzer-db
     environment:
       POSTGRES_HOSTNAME: nisq-analyzer-db
       POSTGRES_PORT: 5060
