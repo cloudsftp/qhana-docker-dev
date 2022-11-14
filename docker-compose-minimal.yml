@@ -28,6 +28,8 @@ services:
     image: planqk/nisq-analyzer:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      - nisq-analyzer-db
     environment:
       POSTGRES_HOSTNAME: nisq-analyzer-db
       POSTGRES_PORT: 5060
