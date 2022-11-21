@@ -79,6 +79,10 @@ docker_mode() {
                    --profile with_db up
 }
 
+demo_mode() {
+    docker compose -f docker-compose-demo.yml --profile with_db up
+}
+
 dev_mode() {
     UI_LOG="${ROOT_DIR}/ui.log"
     PR_LOG="${ROOT_DIR}/plugin-runner.log"
@@ -175,6 +179,8 @@ if [ "$#" -eq 0 ]; then
 elif [ "$1" = "docker" ]; then
     shift
     docker_mode "$@"
+elif [ "$1" = "demo" ]; then
+    demo_mode
 else
     dev_mode "$@"
 fi
