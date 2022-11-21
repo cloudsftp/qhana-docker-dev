@@ -83,7 +83,8 @@ services:
     ports:
       - "5060:5060"
   nisq-analyzer:
-    image: planqk/nisq-analyzer:latest
+    image: nisq-analyzer
+    build: ./nisq-analyzer
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
