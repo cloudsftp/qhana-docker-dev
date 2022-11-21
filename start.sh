@@ -68,6 +68,16 @@ docker_mode() {
                 help
         esac
     done
+    
+    declare -a volumes=(
+        instance
+        experiments
+        exec_data
+    )
+    
+    for volume in "${volumes[@]}"; do
+        mkdir -p "${HOME}/Volumes/${volume}"
+    done
 
     # Rebuild images
     [ "${REBUILD_IMAGES}" = "true" ] && docker compose -f docker-compose-complete.yml \
@@ -76,11 +86,7 @@ docker_mode() {
     # Start the rest with docker compose
     docker compose -f docker-compose-complete.yml \
                    $([ -f "docker-compose.ibmq.yml" ] && echo '-f docker-compose.ibmq.yml') \
-                   --profile with_db up
-}
-
-demo_mode() {
-    docker compose -f docker-compose-demo.yml --profile with_db up
+                   up
 }
 
 dev_mode() {
@@ -179,8 +185,6 @@ if [ "$#" -eq 0 ]; then
 elif [ "$1" = "docker" ]; then
     shift
     docker_mode "$@"
-elif [ "$1" = "demo" ]; then
-    demo_mode
 else
     dev_mode "$@"
 fi
